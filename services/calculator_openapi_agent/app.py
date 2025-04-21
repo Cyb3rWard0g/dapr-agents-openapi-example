@@ -10,15 +10,15 @@ import os
 
 async def main():
     try:
-        llm = OpenAIChatClient(
-            azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
-            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-        )
+        #llm = OpenAIChatClient(
+        #    azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
+        #    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+        #    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        #    api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+        #)
 
         spec_parser = OpenAPISpecParser.from_url("http://127.0.0.1:8000/openapi.json")
-        embedding_function = SentenceTransformerEmbedder(model="all-MiniLM-L6-v2")
+        embedding_function = SentenceTransformerEmbedder(model="all-MiniLM-L6-v2", cache_dir=".model")
         api_vector_store = ChromaVectorStore(
             name="api_toolbox",
             embedding_function=embedding_function,
@@ -27,7 +27,7 @@ async def main():
 
         # Define Agent
         calculator_agent = OpenAPIReActAgent(
-            llm=llm,
+            #llm=llm,
             role="Calculator API Assistant",
             instructions=[
                 "You are a helpful assistant that can perform calculations by calling REST API endpoints.",
@@ -54,6 +54,6 @@ async def main():
 if __name__ == "__main__":
     load_dotenv()
 
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     asyncio.run(main())

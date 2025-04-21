@@ -6,7 +6,7 @@
 
 ```
 cd services/calculator_api
-uvicorn app:app --reload
+python3 server.py --debug
 ````
 
 2. Launch app in Dapr:
